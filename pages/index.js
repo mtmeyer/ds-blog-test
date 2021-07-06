@@ -3,8 +3,15 @@ import Image from "next/image";
 import styles from "../styles/Home.module.scss";
 
 import PostPreview from "../components/PostPreview";
+import { fetchPosts } from "../utils/Contentful";
+import Header from "../components/Header";
 
-export default function Home() {
+export default function Home({ posts }) {
+  console.log(posts);
+  let blogPosts = posts.map((post) => (
+    <PostPreview post={post} key={post.slug} />
+  ));
+
   return (
     <div className={styles.container}>
       <Head>
@@ -12,13 +19,21 @@ export default function Home() {
         <meta name="description" content="Test design system update blog" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <header className={styles.header}>
-        <Image src="/AP_Logo.svg" alt="Auspost logo" width={32} height={32} />
-        <h1>DS Blog Test</h1>
-      </header>
-      <main className={styles.main}>
-        <PostPreview title="Test blog post" />
-      </main>
+      <Header />
+      <main className={styles.main}>{blogPosts}</main>
     </div>
   );
+}
+
+export async function getStaticProps() {
+  const res = await fetchPosts();
+  const posts = await res.map((post) => {
+    return post.fields;
+  });
+
+  return {
+    props: {
+      posts,
+    },
+  };
 }
