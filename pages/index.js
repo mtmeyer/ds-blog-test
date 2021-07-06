@@ -7,7 +7,6 @@ import { fetchPosts } from "../utils/Contentful";
 import Header from "../components/Header";
 
 export default function Home({ posts }) {
-  console.log(posts);
   let blogPosts = posts.map((post) => (
     <PostPreview post={post} key={post.slug} />
   ));

@@ -9,7 +9,6 @@ import styles from "../../styles/Post.module.scss";
 import Header from "../../components/Header";
 
 export default function Post({ post }) {
-  console.log(post);
   return (
     <div className={styles.container}>
       <Head>
