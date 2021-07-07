@@ -9,6 +9,19 @@ import styles from "../../styles/Post.module.scss";
 import Header from "../../components/Header";
 
 export default function Post({ post }) {
+  const options = {
+    renderNode: {
+      // eslint-disable-next-line react/display-name
+      [BLOCKS.EMBEDDED_ASSET]: (node) => (
+        <Image
+          src={`https:${node.data.target.fields.file.url}`}
+          width={node.data.target.fields.file.details.image.width}
+          height={node.data.target.fields.file.details.image.height}
+          alt={node.data.target.fields.description}
+        />
+      ),
+    },
+  };
   return (
     <div className={styles.container}>
       <Head>
@@ -19,19 +32,7 @@ export default function Post({ post }) {
       <Header showHomeLink />
       <main className={styles.main}>
         <h1>{post.fields.heading}</h1>
-        {documentToReactComponents(post.fields.body, {
-          renderNode: {
-            // eslint-disable-next-line react/display-name
-            [BLOCKS.EMBEDDED_ASSET]: (node) => (
-              <Image
-                src={`https:${node.data.target.fields.file.url}`}
-                width={node.data.target.fields.file.details.image.width}
-                height={node.data.target.fields.file.details.image.height}
-                alt={node.data.target.fields.description}
-              />
-            ),
-          },
-        })}
+        {documentToReactComponents(post.fields.body, options)}
       </main>
     </div>
   );
